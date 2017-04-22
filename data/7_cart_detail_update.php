@@ -1,0 +1,20 @@
+<?php
+/**
+ *接收客户端提交的did和count，执行UPDATE，修改详情条目的购买数量，返回{"code":1,"count": 3}
+*/
+  header('Content-Type:application/json');
+  @$did=$_REQUEST['did'] or die('("code":2,"msg":"did required")');
+  $count=$_REQUEST['count'];
+  $count=intval($count);
+  require('1_init.php');
+  if($count!==0) {
+    $sql="UPDATE jd_cart_detail SET count=$count WHERE did=$did";
+  } else{
+	$sql="DELETE FROM jd_cart_detail WHERE did=$did";
+  }
+  mysqli_query($conn,$sql);
+  $output=[
+    'code'=>1,
+	'count'=>$count	
+  ];
+  echo json_encode($output);
